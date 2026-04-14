@@ -22,7 +22,7 @@
 		}
 
 		if (heroBg && heroRef) {
-			scroll(animate(heroBg, { y: [0, 80], scale: [1, 1.05] }), {
+			scroll(animate(heroBg, { y: ['-5%', '5%'], scale: [1.05, 1.1] }), {
 				target: heroRef,
 				offset: ['start start', 'end start']
 			});
@@ -239,11 +239,11 @@
 	<!-- Hero Section -->
 	<section
 		bind:this={heroRef}
-		class="clay-card group relative mb-12 md:mb-20 h-[70vh] min-h-[500px] md:h-[870px] md:min-h-[600px] w-full overflow-hidden rounded-xl"
+		class="clay-card group relative mb-12 md:mb-20 h-[70vh] min-h-[500px] md:h-[870px] md:min-h-[600px] w-full overflow-hidden rounded-xl bg-surface-container-lowest"
 	>
 		<div
 			bind:this={heroBg}
-			class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+			class="absolute -inset-10 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
 			style="background-image: url('https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?auto=format&fit=crop&q=80&w=1600')"
 		>
 			<div
