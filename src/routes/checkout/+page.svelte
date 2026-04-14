@@ -5,74 +5,24 @@
 	import type { CustomerInfo } from '$lib/types/product';
 	import type { CartItem as StoreCartItem } from '$lib/stores/cart';
 
-	type PaymentMethod = 'bca_va' | 'bni_va' | 'bri_va';
-
-	interface PendingCheckout {
-		orderId: string;
-		total: number;
-		items: StoreCartItem[];
-		customerInfo: CustomerInfo;
-	}
-
-	interface CheckoutSelection {
-		mode: 'all' | 'selected';
-		itemIds: number[];
-	}
-
-	interface PaymentCreationResponse {
-		orderId: string;
-		transactionId: string;
-		transactionStatus: string;
-		paymentType: string;
-		expiryTime: string;
-		environment: 'sandbox' | 'production';
-		vaNumbers: Array<{
-			bank: string;
-			vaNumber: string;
-		}>;
-	}
-
-	interface PaymentStatusResponse {
-		orderId: string;
-		transactionStatus: string;
-		statusCode: string;
-		statusMessage: string;
-		fraudStatus?: string;
-		paymentType: string;
-	}
-
-	const PAYMENT_OPTIONS: Array<{
-		id: PaymentMethod;
-		label: string;
-		description: string;
-	}> = [
+	const PAYMENT_OPTIONS = [
 		{
-			id: 'bca_va',
-			label: 'BCA Virtual Account',
-			description: 'Transfer via m-BCA, KlikBCA, atau ATM BCA'
-		},
-		{
-			id: 'bni_va',
-			label: 'BNI Virtual Account',
-			description: 'Transfer via BNI Mobile, ATM, atau internet banking'
-		},
-		{
-			id: 'bri_va',
-			label: 'BRI Virtual Account',
-			description: 'Transfer via BRImo, ATM BRI, atau internet banking'
+			id: 'qris',
+			label: 'QRIS (Semua e-Wallet & Bank)',
+			description: 'Scan QR Code menggunakan aplikasi Bank / e-Wallet Anda'
 		}
 	];
 
 	let loading = $state(false);
-	let checkingStatus = $state(false);
 	let error = $state<string | null>(null);
-	let modalError = $state<string | null>(null);
-	let modalInfo = $state<string | null>(null);
 	let showPaymentModal = $state(false);
-	let selectedPaymentMethod = $state<PaymentMethod>('bca_va');
-	let pendingCheckout = $state<PendingCheckout | null>(null);
-	let paymentResult = $state<PaymentCreationResponse | null>(null);
-	let checkoutSelection = $state<CheckoutSelection>({ mode: 'all', itemIds: [] });
+	let showQris = $state(false);
+	let paymentSuccess = $state(false);
+	let qrisUrl = $state<string | null>(null);
+	let mockPaymentTimeout = $state<number | null>(null);
+	
+	let pendingCheckout = $state<any>(null);
+	let checkoutSelection = $state<{mode: 'all'|'selected', itemIds: number[]}>({ mode: 'all', itemIds: [] });
 
 	let firstName = $state('');
 	let lastName = $state('');
@@ -139,12 +89,10 @@
 		}
 
 		error = null;
-		modalError = null;
-		modalInfo = null;
-		selectedPaymentMethod = 'bca_va';
-		paymentResult = null;
+		showQris = false;
+		paymentSuccess = false;
 
-		const customerInfo: CustomerInfo = {
+		const customerInfo = {
 			firstName,
 			lastName,
 			email,
@@ -166,117 +114,46 @@
 
 	function closePaymentModal() {
 		showPaymentModal = false;
-		loading = false;
-		checkingStatus = false;
-		modalError = null;
-		modalInfo = null;
+		showQris = false;
+		paymentSuccess = false;
+		if (mockPaymentTimeout) {
+			clearTimeout(mockPaymentTimeout);
+		}
+		// Refresh specific state if they close early or finished payment
+		if (checkoutItems.length === 0) {
+			goto('/');
+		}
 	}
 
-	async function createPaymentInvoice() {
+	async function simulatePayment() {
 		if (!pendingCheckout) return;
 
 		loading = true;
-		modalError = null;
-		modalInfo = null;
 
-		try {
-			const response = await fetch('/api/create-transaction', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					orderId: pendingCheckout.orderId,
-					total: pendingCheckout.total,
-					items: pendingCheckout.items,
-					customerInfo: pendingCheckout.customerInfo,
-					paymentMethod: selectedPaymentMethod
-				})
-			});
+		// Simulate API call to create QRIS
+		await new Promise(resolve => setTimeout(resolve, 800));
+		
+		// Generate QR Code URL using QRServer API
+		const qrData = encodeURIComponent(`QRIS-${pendingCheckout.orderId}-${pendingCheckout.total}`);
+		qrisUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${qrData}&color=047857`;
+		
+		showQris = true;
+		loading = false;
 
-			const data = (await response.json()) as PaymentCreationResponse | { error?: string };
-			if (!response.ok) {
-				throw new Error((data as { error?: string }).error || 'Failed to create Midtrans charge');
+		// Automatically simulate successful payment after 4 seconds
+		mockPaymentTimeout = setTimeout(() => {
+			if (checkoutSelection.mode === 'selected') {
+				cart.removeItems(checkoutSelection.itemIds);
+			} else {
+				cart.clear();
 			}
 
-			paymentResult = data as PaymentCreationResponse;
-			modalInfo = 'Tagihan berhasil dibuat. Silakan transfer ke nomor Virtual Account di bawah.';
-
-			sessionStorage.setItem(
-				'lastOrder',
-				JSON.stringify({
-					orderId: pendingCheckout.orderId,
-					total: pendingCheckout.total,
-					items: pendingCheckout.items
-				})
-			);
-		} catch (err) {
-			modalError = err instanceof Error ? err.message : 'Failed to create payment invoice';
-		} finally {
-			loading = false;
-		}
-	}
-
-	async function checkPaymentStatus() {
-		if (!paymentResult) return;
-
-		checkingStatus = true;
-		modalError = null;
-		modalInfo = null;
-
-		try {
-			const response = await fetch(
-				`/api/create-transaction?orderId=${encodeURIComponent(paymentResult.orderId)}`
-			);
-			const data = (await response.json()) as PaymentStatusResponse | { error?: string };
-			if (!response.ok) {
-				throw new Error((data as { error?: string }).error || 'Failed to check payment status');
+			if (typeof window !== 'undefined') {
+				sessionStorage.removeItem('checkoutSelection');
 			}
 
-			const status = (data as PaymentStatusResponse).transactionStatus;
-
-			if (status === 'settlement' || status === 'capture') {
-				if (checkoutSelection.mode === 'selected') {
-					cart.removeItems(checkoutSelection.itemIds);
-				} else {
-					cart.clear();
-				}
-
-				if (typeof window !== 'undefined') {
-					sessionStorage.removeItem('checkoutSelection');
-				}
-
-				showPaymentModal = false;
-				goto(`/checkout/selesai?orderId=${paymentResult.orderId}&status=success`);
-				return;
-			}
-
-			if (status === 'deny' || status === 'cancel' || status === 'expire' || status === 'failure') {
-				modalError = `Pembayaran gagal dengan status "${status}". Coba ulangi checkout.`;
-				return;
-			}
-
-			modalInfo = `Status pembayaran saat ini: ${status}. Lakukan transfer lalu tekan "Cek Status Pembayaran".`;
-		} catch (err) {
-			modalError = err instanceof Error ? err.message : 'Failed to check payment status';
-		} finally {
-			checkingStatus = false;
-		}
-	}
-
-	async function copyToClipboard(value: string) {
-		try {
-			await navigator.clipboard.writeText(value);
-			modalInfo = 'Nomor Virtual Account berhasil disalin.';
-		} catch {
-			modalError = 'Gagal menyalin nomor Virtual Account.';
-		}
-	}
-
-	function goToPendingPage() {
-		if (!paymentResult) return;
-		showPaymentModal = false;
-		goto(`/checkout/selesai?orderId=${paymentResult.orderId}&status=pending`);
+			paymentSuccess = true;
+		}, 4000) as unknown as number;
 	}
 </script>
 
@@ -435,115 +312,71 @@
 
 {#if showPaymentModal}
 	<div class="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 p-4 sm:p-6 backdrop-blur-sm">
-		<div class="w-full max-w-2xl overflow-hidden rounded-2xl clay-card bg-surface-container-lowest">
-			<div class="flex items-center justify-between border-b border-surface-container px-8 py-6">
+		<div class="w-full max-w-sm overflow-hidden rounded-2xl clay-card bg-surface-container-lowest">
+			<div class="flex items-center justify-between border-b border-surface-container px-6 py-5">
 				<div>
-					<h3 class="font-headline text-2xl font-black text-on-surface tracking-tighter">Pembayaran Midtrans</h3>
-					<p class="text-sm font-medium text-on-surface-variant mt-1">Order: {pendingCheckout?.orderId || '-'}</p>
+					<h3 class="font-headline text-xl font-black text-on-surface tracking-tighter">
+						{paymentSuccess ? 'Status Pembayaran' : 'Pembayaran QRIS'}
+					</h3>
+					<p class="text-xs font-medium text-on-surface-variant mt-1">Order: {pendingCheckout?.orderId || '-'}</p>
 				</div>
 				<button
 					type="button"
 					onclick={closePaymentModal}
-					class="rounded-full bg-surface-container-high w-10 h-10 flex items-center justify-center text-on-surface hover:bg-surface-container-highest transition-colors"
+					class="rounded-full bg-surface-container-high w-8 h-8 flex items-center justify-center text-on-surface hover:bg-surface-container-highest transition-colors"
 				>
-					<span class="material-symbols-outlined text-lg">close</span>
+					<span class="material-symbols-outlined text-sm">close</span>
 				</button>
 			</div>
 
-			<div class="space-y-6 p-8">
-				{#if !paymentResult}
-					<div>
-						<h4 class="mb-4 font-headline text-xl font-bold text-on-surface">Pilih Metode Pembayaran</h4>
-						<div class="space-y-4">
-							{#each PAYMENT_OPTIONS as option}
-								<button
-									type="button"
-									onclick={() => (selectedPaymentMethod = option.id)}
-									class={`w-full rounded-xl border p-5 text-left transition-all ${
-										selectedPaymentMethod === option.id
-											? 'border-primary bg-primary-container/20 clay-recessed shadow-inner'
-											: 'border-surface-container hover:border-surface-container-high bg-white'
-									}`}
-								>
-									<p class="font-headline font-bold text-lg text-on-surface">{option.label}</p>
-									<p class="text-sm font-medium text-on-surface-variant mt-1">{option.description}</p>
-								</button>
-							{/each}
+			<div class="space-y-6 p-6">
+				{#if paymentSuccess}
+					<div class="text-center py-6">
+						<div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 clay-recessed shadow-inner border border-emerald-200">
+							<span class="material-symbols-outlined text-5xl">check_circle</span>
 						</div>
+						<h4 class="mb-2 font-headline text-2xl font-black text-on-surface tracking-tighter">Pembayaran Berhasil!</h4>
+						<p class="text-sm font-medium text-on-surface-variant mb-8">Terima kasih, pembayaran untuk pesanan <span class="font-bold text-on-surface">{pendingCheckout?.orderId}</span> senilai <span class="font-bold text-primary">{formatPrice(pendingCheckout?.total || 0)}</span> telah dikonfirmasi.</p>
+						
+						<button
+							type="button"
+							onclick={() => {
+								closePaymentModal();
+								goto('/cek-pesanan');
+							}}
+							class="w-full rounded-full clay-button-primary bg-primary py-3.5 font-headline text-base font-bold text-on-primary transition-transform hover:scale-[1.02]"
+						>
+							Selesai & Cek Pesanan
+						</button>
+					</div>
+				{:else if !showQris}
+					<div class="text-center">
+						<span class="material-symbols-outlined text-6xl text-primary mb-4 block">qr_code_scanner</span>
+						<h4 class="mb-2 font-headline text-lg font-bold text-on-surface">Bayar dengan QRIS</h4>
+						<p class="text-sm font-medium text-on-surface-variant mb-6">Scan QR code menggunakan aplikasi GoPay, OVO, Dana, LinkAja, atau Mobile Banking pilihan Anda.</p>
 					</div>
 
 					<button
 						type="button"
 						disabled={loading}
-						onclick={createPaymentInvoice}
-						class="w-full rounded-full clay-button-primary bg-primary py-4 font-headline text-lg font-bold text-on-primary transition-transform hover:scale-[1.02] disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
+						onclick={simulatePayment}
+						class="w-full rounded-full clay-button-primary bg-primary py-3.5 font-headline text-base font-bold text-on-primary transition-transform hover:scale-[1.02] disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
 					>
-						{loading ? 'Membuat tagihan...' : 'Buat Tagihan Midtrans'}
+						{loading ? 'Membuat QRIS...' : 'Tampilkan QRIS'}
 					</button>
 				{:else}
-					<div class="rounded-xl border border-primary/20 bg-primary-container/20 p-5 mt-2">
-						<p class="font-headline font-bold text-primary text-lg">Tagihan berhasil dibuat</p>
-						<p class="text-sm font-medium text-on-surface-variant mt-1">
-							Status awal: <span class="font-bold text-on-surface">{paymentResult.transactionStatus}</span> | Expired: {paymentResult.expiryTime}
-						</p>
-					</div>
-
-					<div class="rounded-xl border border-surface-container p-5 clay-recessed bg-white">
-						<p class="mb-2 text-sm font-bold text-on-surface-variant">Transaction ID</p>
-						<p class="font-mono text-sm break-all font-medium text-on-surface">{paymentResult.transactionId}</p>
-					</div>
-
-					<div>
-						<h4 class="mb-3 font-headline text-xl font-bold text-on-surface">Nomor Virtual Account</h4>
-						<div class="space-y-3">
-							{#each paymentResult.vaNumbers as va (va.bank)}
-								<div
-									class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-surface-container p-5 clay-recessed bg-white"
-								>
-									<div>
-										<p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-1">{va.bank}</p>
-										<p class="font-headline text-2xl font-black text-primary tracking-wider">{va.vaNumber}</p>
-									</div>
-									<button
-										type="button"
-										onclick={() => copyToClipboard(va.vaNumber)}
-										class="rounded-full bg-surface-container-high px-6 py-2.5 font-bold text-sm text-on-surface hover:bg-surface-container-highest transition-colors flex items-center justify-center gap-2 w-full sm:w-auto"
-									>
-										<span class="material-symbols-outlined text-sm">content_copy</span>
-										Salin
-									</button>
-								</div>
-							{/each}
+					<div class="text-center">
+						<div class="mb-4 rounded-xl border border-surface-container p-4 clay-recessed bg-white mx-auto max-w-[250px]">
+							<img src={qrisUrl} alt="Kode QRIS" class="w-full h-auto aspect-square object-contain" />
 						</div>
-					</div>
+						
+						<h4 class="mb-1 font-headline text-2xl font-black text-primary">{formatPrice(pendingCheckout?.total || 0)}</h4>
+						<p class="text-sm font-medium text-on-surface-variant mb-4">A L - Q U R B A N</p>
 
-					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
-						<button
-							type="button"
-							disabled={checkingStatus}
-							onclick={checkPaymentStatus}
-							class="rounded-full clay-button-primary bg-primary py-3.5 font-headline font-bold text-on-primary transition-transform hover:scale-[1.02] disabled:opacity-50 disabled:hover:scale-100"
-						>
-							{checkingStatus ? 'Mengecek...' : 'Cek Status Pembayaran'}
-						</button>
-						<button
-							type="button"
-							onclick={goToPendingPage}
-							class="rounded-full bg-surface-container-high py-3.5 font-headline font-bold text-on-surface hover:bg-surface-container-highest transition-colors"
-						>
-							Lanjutkan Nanti
-						</button>
-					</div>
-				{/if}
-
-				{#if modalInfo}
-					<div class="rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm font-medium text-blue-700">
-						{modalInfo}
-					</div>
-				{/if}
-				{#if modalError}
-					<div class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-700">
-						{modalError}
+						<div class="flex flex-col items-center justify-center gap-3 bg-primary-container/30 text-primary p-4 rounded-xl border border-primary/20">
+							<div class="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+							<p class="font-bold text-sm">Menunggu pembayaran otomatis (Dummy)...</p>
+						</div>
 					</div>
 				{/if}
 			</div>
