@@ -1,0 +1,7 @@
+{
+	"Codegeex.RepoIndex": true,
+	"Codegeex.SidebarUI.LanguagePreference": "English",
+	"files.associations": {
+		"*.css": "tailwindcss"
+	}
+}

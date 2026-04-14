@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Best-Qurban | The Tactile Sanctuary of Giving</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Plus+Jakarta+Sans:wght@500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#fff1d4",
+                        "on-primary-fixed": "#004535",
+                        "secondary-container": "#f5ce53",
+                        "tertiary-dim": "#00576d",
+                        "surface-container-highest": "#d9dedd",
+                        "surface-bright": "#f5f7f6",
+                        "on-error": "#ffefee",
+                        "primary-fixed-dim": "#8bdfc3",
+                        "outline-variant": "#abaead",
+                        "on-primary": "#c5ffe9",
+                        "tertiary-fixed-dim": "#00c0ec",
+                        "error": "#b31b25",
+                        "tertiary-fixed": "#00cefe",
+                        "secondary-fixed-dim": "#e6c047",
+                        "on-primary-container": "#005946",
+                        "secondary-fixed": "#f5ce53",
+                        "on-tertiary-container": "#004051",
+                        "surface-container": "#e6e9e8",
+                        "on-tertiary": "#e2f6ff",
+                        "background": "#f5f7f6",
+                        "tertiary": "#00647c",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#d9dedd",
+                        "on-primary-fixed-variant": "#00644f",
+                        "on-surface-variant": "#595c5c",
+                        "surface": "#f5f7f6",
+                        "on-surface": "#2c2f2f",
+                        "error-container": "#fb5151",
+                        "primary-container": "#99edd1",
+                        "on-error-container": "#570008",
+                        "secondary": "#705900",
+                        "inverse-primary": "#a7fcdf",
+                        "outline": "#747777",
+                        "error-dim": "#9f0519",
+                        "surface-dim": "#d0d5d4",
+                        "surface-container-low": "#eff1f0",
+                        "inverse-on-surface": "#9b9d9d",
+                        "on-secondary-fixed-variant": "#634e00",
+                        "primary-dim": "#005b48",
+                        "primary": "#006853",
+                        "surface-tint": "#006853",
+                        "on-secondary-fixed": "#413200",
+                        "inverse-surface": "#0b0f0f",
+                        "tertiary-container": "#00cefe",
+                        "on-secondary-container": "#584500",
+                        "surface-container-high": "#dfe3e2",
+                        "on-tertiary-fixed": "#002935",
+                        "on-tertiary-fixed-variant": "#004a5d",
+                        "primary-fixed": "#99edd1",
+                        "on-background": "#2c2f2f",
+                        "secondary-dim": "#624d00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .clay-card {
+            box-shadow: 
+                inset 8px 8px 16px rgba(255, 255, 255, 0.4),
+                inset -8px -8px 16px rgba(0, 104, 83, 0.05),
+                0 20px 40px rgba(0, 0, 0, 0.03);
+        }
+        .clay-button-primary {
+            box-shadow: 
+                inset 4px 4px 8px rgba(255, 255, 255, 0.3),
+                inset -4px -4px 8px rgba(0, 0, 0, 0.2),
+                0 10px 20px rgba(0, 104, 83, 0.15);
+        }
+        .clay-button-secondary {
+            box-shadow: 
+                inset 4px 4px 8px rgba(255, 255, 255, 0.5),
+                inset -4px -4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .clay-recessed {
+            box-shadow: 
+                inset 6px 6px 12px rgba(0, 0, 0, 0.05),
+                inset -6px -6px 12px rgba(255, 255, 255, 0.8);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-surface antialiased">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 rounded-b-[2rem] bg-emerald-50/80 dark:bg-emerald-950/80 backdrop-blur-xl flex justify-between items-center px-8 h-20 max-w-full inner-shadow-sm shadow-[0_20px_40px_rgba(0,104,83,0.05)]">
+<div class="text-2xl font-black tracking-tighter text-emerald-900 dark:text-emerald-50 font-headline">Best-Qurban</div>
+<nav class="hidden md:flex gap-10">
+<a class="text-emerald-900 dark:text-emerald-50 font-extrabold border-b-2 border-emerald-600 font-headline tracking-tight hover:scale-105 transition-all duration-300" href="#">Experience</a>
+<a class="text-emerald-700/70 dark:text-emerald-400/70 font-medium font-headline tracking-tight hover:scale-105 hover:text-emerald-900 transition-all duration-300" href="#">Livestock</a>
+<a class="text-emerald-700/70 dark:text-emerald-400/70 font-medium font-headline tracking-tight hover:scale-105 hover:text-emerald-900 transition-all duration-300" href="#">Impact</a>
+<a class="text-emerald-700/70 dark:text-emerald-400/70 font-medium font-headline tracking-tight hover:scale-105 hover:text-emerald-900 transition-all duration-300" href="#">Legacy</a>
+</nav>
+<div class="flex items-center gap-6">
+<button class="bg-primary text-on-primary px-8 py-3 rounded-full font-headline font-bold clay-button-primary active:scale-95 transition-all">Donate Now</button>
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden clay-card">
+<img alt="User profile" data-alt="close-up portrait of a middle-aged man with a friendly expression in a soft outdoor setting with morning light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9xk1Zp1svO-ulhpTQXNXZ3zoq_tRbg4Ykx-6niDYvTdltzJG1VuHgCyScr91CWEjFZ2giTl4sG6QowX7ndIhSytANiuKdqOT9WTSucz6zsaPnfpPcVNVUzTeButkBtODFquVR2pQpyzbQBI-W4lioNSNbC7D6hTCCUf7yi8hbsD7Vt6Umb8ZomtQ8won1bDo5490Wt78VwDkaXteAU3YW7Se0KTE2-alCn49qyGAw4R3kstt_M7zkzg8OCsXreE42LPGjhfueeA"/>
+</div>
+</div>
+</header>
+<main class="pt-28 px-4 md:px-12 max-w-7xl mx-auto">
+<!-- Hero Section -->
+<section class="relative h-[870px] min-h-[600px] w-full rounded-xl overflow-hidden clay-card mb-20 group">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="majestic healthy cow standing in a lush green sunlit meadow with soft morning mist and mountains in the far background" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDUmFNaqRu9EQf9kb8McK58r9yWimMU3ShXGRLyeVDlSLwcCy84RdKyBPKRdlHhO9ZbMDLCv8Uex70dZA-TzPnEzWlhiTxnKXevEjYBe1cnzFwzA0BULPuyffEZOzq__0V4wV9e0OnybOfwDvZ5pyuUJ9jDmIJRjzFDZ8KUAIfdoywiwGyki_V2IsBlsvZdA020apbl7Vy-LFHPEIf_84_qAUaaBj8VKuw9whm9R18g0_cnKBWB9WrsOs4T60eeX-aCh7mu_b1zUw')">
+<div class="absolute inset-0 bg-gradient-to-r from-emerald-950/80 via-emerald-950/40 to-transparent"></div>
+</div>
+<div class="relative h-full flex flex-col justify-center px-12 md:px-24">
+<span class="font-label text-secondary-container uppercase tracking-[0.3em] mb-6 font-bold">Tradisi &amp; Teknologi</span>
+<h1 class="text-6xl md:text-8xl font-headline font-black text-white leading-[0.9] tracking-tighter mb-8 max-w-2xl">
+                    Ibadah Suci,<br/><span class="text-secondary-container italic font-light">Terpilih.</span>
+</h1>
+<p class="text-emerald-50 text-xl md:text-2xl max-w-lg mb-12 font-medium leading-relaxed opacity-90">
+                    Menghadirkan pengalaman kurban premium yang mengutamakan kualitas hewan terbaik dan transparansi proses ritual yang sakral.
+                </p>
+<div class="flex flex-wrap gap-6">
+<button class="bg-primary text-on-primary text-lg px-10 py-5 rounded-full font-headline font-extrabold clay-button-primary active:scale-95 transition-all flex items-center gap-3">
+                        Pilih Hewan <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="bg-white/10 backdrop-blur-md text-white border border-white/20 text-lg px-10 py-5 rounded-full font-headline font-bold hover:bg-white/20 active:scale-95 transition-all">
+                        Pelajari Proses
+                    </button>
+</div>
+</div>
+</section>
+<!-- Product Grid (Curated Offerings) -->
+<section class="mb-32">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+<div class="max-w-xl">
+<h2 class="text-5xl font-headline font-black text-primary tracking-tighter leading-none mb-6">Curated Offerings</h2>
+<p class="text-on-surface-variant text-lg font-medium leading-relaxed">
+                        Setiap hewan di Best-Qurban melewati kurasi ketat untuk memastikan standar kesehatan dan kelayakan syar'i terbaik bagi ibadah Anda.
+                    </p>
+</div>
+<div class="flex gap-4">
+<button class="w-14 h-14 rounded-full bg-surface-container-low flex items-center justify-center clay-button-secondary text-primary">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-14 h-14 rounded-full bg-primary flex items-center justify-center clay-button-primary text-on-primary">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<!-- Product Card 1 -->
+<div class="bg-surface-container-lowest p-8 rounded-xl clay-card flex flex-col group hover:-translate-y-4 transition-transform duration-500">
+<div class="relative h-80 w-full rounded-lg mb-8 overflow-hidden clay-recessed">
+<img alt="Premium Cow" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="close-up of a premium Limousin cow with a glossy brown coat in a clean, modern stable environment with warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuASKls8YhplpRCyWVaYZc_u9iGrYj3KkHyzWDIPtsnw4ISKuLFD3Cz94iR-VJbu-SG9f1FC_T0TP36k0shk_TWXUzPwjzUyouuejq_Tq2Scm1lad9JmuzJ9dB1VBbQKtnnMSolZRd-Y7rL2Au92CcbALS31tGhuAy82avD4rGqzwr-w9nWS32dvrqpcglHYeF00Q-BXz4wJlvp-uIjgdjrZBWdncrDhiWbISsgqx3Yo_kZulQ08tXhKSwFK_-PnjEW8S4SWfy6Cbw"/>
+<div class="absolute top-4 right-4 bg-secondary-container text-on-secondary-container px-4 py-1 rounded-full font-label text-xs font-bold uppercase tracking-widest">Elite Tier</div>
+</div>
+<div class="flex justify-between items-start mb-4">
+<h3 class="text-3xl font-headline font-black text-on-surface">Sapi Limousin</h3>
+<span class="text-emerald-700 font-label font-bold">~650kg</span>
+</div>
+<p class="text-on-surface-variant font-medium mb-8 flex-grow">
+                        Genetik unggul dengan tekstur daging premium. Dipelihara dengan pakan organik di Sanctuary Best-Qurban.
+                    </p>
+<div class="flex items-center justify-between mt-auto">
+<div class="text-primary font-headline font-black text-2xl">Rp 45.500.000</div>
+<button class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center clay-button-primary">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-surface-container-lowest p-8 rounded-xl clay-card flex flex-col group hover:-translate-y-4 transition-transform duration-500 border-2 border-primary/10">
+<div class="relative h-80 w-full rounded-lg mb-8 overflow-hidden clay-recessed">
+<img alt="Premium Sheep" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="side profile of a large healthy merino sheep with thick clean white wool standing on a hilltop at sunset" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaMewTF3wHITiGlwbOLUQ4cRlCtDXbsOzYPi1GNaq48wByCEfuWm8lYGa85Vry-Vr9BXXyp58HQmo4yC82LFf-8-DmUbkAigDVhUqE5-uk5WXJk4_IT0iYnRMrsCp4pXLebdsPSiAbb2-73yQ0_wIXuqozQ6f5q9VBsfKkEEVMpz7ouUqm9-8rx4MXCkS30KIbTyU_DhmKNOlhoi5KzP5NXtiFxOxaXvQwgHbxLuUpMaQI_kL-y5Bei3NkOkQvjYd605QixEtyEA"/>
+<div class="absolute top-4 right-4 bg-primary text-on-primary px-4 py-1 rounded-full font-label text-xs font-bold uppercase tracking-widest">Best Choice</div>
+</div>
+<div class="flex justify-between items-start mb-4">
+<h3 class="text-3xl font-headline font-black text-on-surface">Domba Merino</h3>
+<span class="text-emerald-700 font-label font-bold">~45kg</span>
+</div>
+<p class="text-on-surface-variant font-medium mb-8 flex-grow">
+                        Domba berkualitas ekspor dengan tingkat lemak rendah dan karkas yang melimpah.
+                    </p>
+<div class="flex items-center justify-between mt-auto">
+<div class="text-primary font-headline font-black text-2xl">Rp 4.250.000</div>
+<button class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center clay-button-primary">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="bg-surface-container-lowest p-8 rounded-xl clay-card flex flex-col group hover:-translate-y-4 transition-transform duration-500">
+<div class="relative h-80 w-full rounded-lg mb-8 overflow-hidden clay-recessed">
+<img alt="Premium Goat" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="portrait of a strong boer goat with striking brown and white patterns in a rustic barn with sunlight streaming through wood gaps" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKUEn-JKcDYObty7I9P4lRly25oF_ynj5LaV7nwNiIGYX2-kDKvaUwwy-25onyF1QTEZf6DajeFFXwEkN5116wg0NtZam2smp25HdGa54R2hDkOtv9jbjcE0NW1ngWcx_w_neaYBtFYvq8WUYfIuwLV9RRKlcmLtUPgVvSgb31q2LzxMf8CfgOb0kRtN1yee7YP1eExcee1JY4AEpD9Zh40FO-3lJzcZscyQjG6sQhkWqztnNaNU6fodfR0xiXAjjew7SxfFqQuw"/>
+</div>
+<div class="flex justify-between items-start mb-4">
+<h3 class="text-3xl font-headline font-black text-on-surface">Kambing Boer</h3>
+<span class="text-emerald-700 font-label font-bold">~55kg</span>
+</div>
+<p class="text-on-surface-variant font-medium mb-8 flex-grow">
+                        Postur gagah dengan pertumbuhan daging yang sangat baik. Pilihan tepat untuk kurban personal.
+                    </p>
+<div class="flex items-center justify-between mt-auto">
+<div class="text-primary font-headline font-black text-2xl">Rp 5.750.000</div>
+<button class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center clay-button-primary">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Process Section (Tactile Timeline) -->
+<section class="mb-32">
+<div class="bg-emerald-950 rounded-xl p-12 md:p-20 text-white relative overflow-hidden clay-card">
+<div class="absolute top-0 right-0 w-1/2 h-full opacity-10 bg-[url('https://images.unsplash.com/photo-1590059344400-985f57a3e74c?auto=format&amp;fit=crop&amp;q=80&amp;w=1000')] bg-cover" data-alt="abstract pattern of Islamic geometric shapes in gold and emerald tones with soft lighting effects"></div>
+<h2 class="text-5xl font-headline font-black mb-20 tracking-tighter relative z-10">Proses <span class="text-secondary-container">Terkurasi</span></h2>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
+<div class="flex flex-col gap-6 group">
+<div class="w-20 h-20 rounded-xl bg-white/10 flex items-center justify-center clay-button-secondary group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-4xl text-secondary-container">verified_user</span>
+</div>
+<div class="h-1 w-full bg-white/10 rounded-full relative overflow-hidden">
+<div class="absolute inset-0 bg-secondary-container w-1/4"></div>
+</div>
+<h4 class="text-xl font-headline font-extrabold">Seleksi Hewan</h4>
+<p class="text-emerald-100/60 font-medium">Hanya 10% hewan terbaik yang lolos standar kualitas kami.</p>
+</div>
+<div class="flex flex-col gap-6 group">
+<div class="w-20 h-20 rounded-xl bg-white/10 flex items-center justify-center clay-button-secondary group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-4xl text-secondary-container">spa</span>
+</div>
+<div class="h-1 w-full bg-white/10 rounded-full relative">
+<div class="absolute inset-0 bg-secondary-container/30 w-full"></div>
+</div>
+<h4 class="text-xl font-headline font-extrabold">Rawatan Eksklusif</h4>
+<p class="text-emerald-100/60 font-medium">Diet spesifik dan pemantauan kesehatan rutin oleh dokter hewan.</p>
+</div>
+<div class="flex flex-col gap-6 group">
+<div class="w-20 h-20 rounded-xl bg-white/10 flex items-center justify-center clay-button-secondary group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-4xl text-secondary-container">routine</span>
+</div>
+<div class="h-1 w-full bg-white/10 rounded-full relative">
+<div class="absolute inset-0 bg-secondary-container/30 w-full"></div>
+</div>
+<h4 class="text-xl font-headline font-extrabold">Ritual Syar'i</h4>
+<p class="text-emerald-100/60 font-medium">Penyembelihan sesuai adab Islam dengan tim ahli tersertifikasi.</p>
+</div>
+<div class="flex flex-col gap-6 group">
+<div class="w-20 h-20 rounded-xl bg-white/10 flex items-center justify-center clay-button-secondary group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-4xl text-secondary-container">auto_videocam</span>
+</div>
+<div class="h-1 w-full bg-white/10 rounded-full relative">
+<div class="absolute inset-0 bg-secondary-container/30 w-full"></div>
+</div>
+<h4 class="text-xl font-headline font-extrabold">Laporan Real-time</h4>
+<p class="text-emerald-100/60 font-medium">Dokumentasi video eksklusif untuk setiap pekurban.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Newsletter / CTA Bento -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-8 mb-32">
+<div class="md:col-span-7 bg-surface-container-low p-12 rounded-xl clay-card relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="text-4xl font-headline font-black text-primary mb-6 tracking-tighter">Bergabung dalam<br/>Komunitas Donatur</h3>
+<p class="text-on-surface-variant font-medium text-lg max-w-md mb-8">Dapatkan update berkala mengenai program kemanusiaan dan stok hewan kurban terbaru.</p>
+<div class="flex gap-4">
+<div class="flex-grow bg-white px-6 py-4 rounded-full clay-recessed">
+<input class="w-full bg-transparent border-none focus:ring-0 font-medium" placeholder="Email Anda" type="email"/>
+</div>
+<button class="bg-primary text-on-primary px-8 rounded-full font-headline font-bold clay-button-primary">Langganan</button>
+</div>
+</div>
+<div class="absolute top-1/2 -right-20 -translate-y-1/2 w-80 h-80 bg-primary/5 rounded-full blur-3xl"></div>
+</div>
+<div class="md:col-span-5 bg-secondary-container p-12 rounded-xl clay-card flex flex-col justify-center">
+<span class="material-symbols-outlined text-6xl text-on-secondary-container mb-6">support_agent</span>
+<h3 class="text-3xl font-headline font-black text-on-secondary-container mb-4 tracking-tighter">Butuh Bantuan Personal?</h3>
+<p class="text-on-secondary-container/80 font-bold mb-8">Tim Sanctuary Best-Qurban siap membantu memilih hewan terbaik.</p>
+<button class="bg-on-secondary-container text-secondary-container py-4 rounded-full font-headline font-black clay-button-secondary">Hubungi Konsultan</button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-emerald-900 dark:bg-black rounded-t-[4rem] mt-20 flex flex-col items-center py-16 px-4 gap-8 shadow-[0_-20px_60px_rgba(0,0,0,0.2)]">
+<div class="text-4xl font-black text-amber-400 font-headline tracking-tighter">Best-Qurban</div>
+<nav class="flex flex-wrap justify-center gap-10">
+<a class="text-emerald-200/60 font-manrope uppercase tracking-widest text-xs font-bold hover:text-amber-200 transition-colors" href="#">Ethics</a>
+<a class="text-emerald-200/60 font-manrope uppercase tracking-widest text-xs font-bold hover:text-amber-200 transition-colors" href="#">Process</a>
+<a class="text-emerald-200/60 font-manrope uppercase tracking-widest text-xs font-bold hover:text-amber-200 transition-colors" href="#">Transparency</a>
+<a class="text-emerald-200/60 font-manrope uppercase tracking-widest text-xs font-bold hover:text-amber-200 transition-colors" href="#">Contact</a>
+</nav>
+<div class="w-full max-w-4xl h-px bg-white/10 my-4"></div>
+<p class="text-amber-400 font-manrope uppercase tracking-widest text-xs opacity-60">
+            © 2024 Best-Qurban. The Tactile Sanctuary of Giving.
+        </p>
+</footer>
+</body></html>

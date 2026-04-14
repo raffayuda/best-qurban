@@ -1,0 +1,209 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+/* Theme colors from DESIGN.md - Tactical Claymorphism */
+@theme {
+	--color-primary: #006853;
+	--color-primary-dim: #005b48;
+	--color-primary-container: #99edd1;
+	--color-primary-fixed: #99edd1;
+	--color-primary-fixed-dim: #8bdfc3;
+	--color-on-primary: #c5ffe9;
+	--color-on-primary-container: #005946;
+	--color-on-primary-fixed: #004535;
+	--color-on-primary-fixed-variant: #00644f;
+	
+	--color-secondary: #705900;
+	--color-secondary-container: #f5ce53;
+	--color-secondary-dim: #624d00;
+	--color-secondary-fixed: #f5ce53;
+	--color-secondary-fixed-dim: #e6c047;
+	--color-on-secondary: #fff1d4;
+	--color-on-secondary-container: #584500;
+	--color-on-secondary-fixed: #413200;
+	--color-on-secondary-fixed-variant: #634e00;
+	
+	--color-tertiary: #00647c;
+	--color-tertiary-container: #00cefe;
+	--color-tertiary-dim: #00576d;
+	--color-tertiary-fixed: #00cefe;
+	--color-tertiary-fixed-dim: #00c0ec;
+	--color-on-tertiary: #e2f6ff;
+	--color-on-tertiary-container: #004051;
+	--color-on-tertiary-fixed: #002935;
+	--color-on-tertiary-fixed-variant: #004a5d;
+	
+	--color-surface: #f5f7f6;
+	--color-surface-bright: #f5f7f6;
+	--color-surface-dim: #d0d5d4;
+	--color-surface-container: #e6e9e8;
+	--color-surface-container-low: #eff1f0;
+	--color-surface-container-lowest: #ffffff;
+	--color-surface-container-high: #dfe3e2;
+	--color-surface-container-highest: #d9dedd;
+	--color-surface-variant: #d9dedd;
+	--color-surface-tint: #006853;
+	
+	--color-on-surface: #2c2f2f;
+	--color-on-surface-variant: #595c5c;
+	--color-inverse-surface: #0b0f0f;
+	--color-inverse-on-surface: #9b9d9d;
+	--color-inverse-primary: #a7fcdf;
+	
+	--color-outline: #747777;
+	--color-outline-variant: #abaead;
+	
+	--color-background: #f5f7f6;
+	--color-on-background: #2c2f2f;
+	
+	--color-error: #b31b25;
+	--color-error-container: #fb5151;
+	--color-error-dim: #9f0519;
+	--color-on-error: #ffefee;
+	--color-on-error-container: #570008;
+	
+	--font-family-headline: 'Manrope', sans-serif;
+	--font-family-body: 'Manrope', sans-serif;
+	--font-family-label: 'Plus Jakarta Sans', sans-serif;
+	
+	--border-radius-DEFAULT: 1rem;
+	--border-radius-lg: 2rem;
+	--border-radius-xl: 3rem;
+	--border-radius-full: 9999px;
+}
+
+/* Custom fonts */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap');
+
+/* Material Symbols Icon Font - must be loaded for icons to work */
+.material-symbols-outlined {
+	font-family: 'Material Symbols Outlined';
+	font-weight: normal;
+	font-style: normal;
+	font-size: 24px;
+	line-height: 1;
+	letter-spacing: normal;
+	text-transform: none;
+	display: inline-block;
+	white-space: nowrap;
+	word-wrap: normal;
+	direction: ltr;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+	font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Clay morphism styles */
+.clay-card {
+	box-shadow:
+		inset 8px 8px 16px rgba(255, 255, 255, 0.4),
+		inset -8px -8px 16px rgba(0, 104, 83, 0.05),
+		0 20px 40px rgba(0, 0, 0, 0.03);
+}
+
+.clay-button-primary {
+	box-shadow:
+		inset 4px 4px 8px rgba(255, 255, 255, 0.3),
+		inset -4px -4px 8px rgba(0, 0, 0, 0.2),
+		0 10px 20px rgba(0, 104, 83, 0.15);
+	transition: all 0.2s ease;
+}
+
+.clay-button-primary:hover {
+	box-shadow:
+		inset 6px 6px 12px rgba(255, 255, 255, 0.4),
+		inset -6px -6px 12px rgba(0, 0, 0, 0.25),
+		0 15px 30px rgba(0, 104, 83, 0.2);
+	transform: translateY(-2px);
+}
+
+.clay-button-primary:active {
+	box-shadow:
+		inset 2px 2px 4px rgba(0, 0, 0, 0.2),
+		inset -2px -2px 4px rgba(255, 255, 255, 0.2);
+	transform: scale(0.95);
+}
+
+.clay-button-secondary {
+	box-shadow:
+		inset 4px 4px 8px rgba(255, 255, 255, 0.5),
+		inset -4px -4px 8px rgba(0, 0, 0, 0.1);
+	transition: all 0.2s ease;
+}
+
+.clay-button-secondary:hover {
+	box-shadow:
+		inset 6px 6px 12px rgba(255, 255, 255, 0.6),
+		inset -6px -6px 12px rgba(0, 0, 0, 0.15);
+	transform: translateY(-2px);
+}
+
+.clay-button-secondary:active {
+	box-shadow:
+		inset 2px 2px 4px rgba(0, 0, 0, 0.1),
+		inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+	transform: scale(0.95);
+}
+
+.clay-recessed {
+	box-shadow:
+		inset 6px 6px 12px rgba(0, 0, 0, 0.05),
+		inset -6px -6px 12px rgba(255, 255, 255, 0.8);
+}
+
+/* Scroll progress indicator shimmer animation */
+@keyframes shimmer {
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
+}
+
+/* Smooth scroll behavior */
+html {
+	scroll-behavior: smooth;
+}
+
+/* Fade-in animation for page load */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Floating animation for decorative elements */
+@keyframes float {
+	0%, 100% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-20px);
+	}
+}
+
+.animate-float {
+	animation: float 6s ease-in-out infinite;
+}
+
+/* Pulse glow effect for important elements */
+@keyframes pulseGlow {
+	0%, 100% {
+		box-shadow: 0 0 20px rgba(0, 104, 83, 0.3);
+	}
+	50% {
+		box-shadow: 0 0 40px rgba(0, 104, 83, 0.6);
+	}
+}
+
+.animate-pulse-glow {
+	animation: pulseGlow 2s ease-in-out infinite;
+}
