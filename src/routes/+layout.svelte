@@ -4,9 +4,11 @@
 	import { page } from '$app/stores';
 	import { cartItemCount } from '$lib/stores/cart';
 	import { onMount } from 'svelte';
+	import { fade, slide } from 'svelte/transition';
 
 	let { children } = $props();
 	let scrollProgress = $state(0);
+	let isMobileMenuOpen = $state(false);
 
 	const navLinks = [
 		{ href: '/', label: 'Beranda' },
@@ -39,16 +41,17 @@
 	</div>
 
 	<!-- Top Navigation Bar -->
-	<header class="fixed top-0 w-full z-50 rounded-b-2xl bg-emerald-50/80 backdrop-blur-xl flex justify-between items-center px-8 h-20 max-w-full shadow-[0_20px_40px_rgba(0,104,83,0.05)]">
+	<header class="fixed top-0 w-full z-50 rounded-b-2xl bg-emerald-50/90 backdrop-blur-xl flex justify-between items-center px-4 md:px-8 h-20 max-w-full shadow-[0_20px_40px_rgba(0,104,83,0.05)]">
 		<div class="flex items-center gap-2">
-			<img src=/BQ_Logo_Mono_4.png alt="Logo" class="w-10 h-10" />
-			<a href="/" class="text-2xl font-black tracking-tighter text-emerald-900 font-headline -ml-2">Best-Qurban</a>
+			<img src=/BQ_Logo_Mono_4.png alt="Logo" class="w-8 h-8 md:w-10 md:h-10" />
+			<a href="/" class="text-xl md:text-2xl font-black tracking-tighter text-emerald-900 font-headline -ml-2">Best-Qurban</a>
 		</div>
-		<nav class="hidden md:flex gap-2">
+		
+		<nav class="hidden lg:flex gap-1 xl:gap-2">
 			{#each navLinks as link}
 				<a 
 					href={link.href}
-					class="px-6 py-3 rounded-full font-headline font-bold transition-all duration-300 {
+					class="px-4 xl:px-6 py-2.5 rounded-full font-headline font-bold transition-all duration-300 text-sm xl:text-base {
 						$page.url.pathname === link.href 
 							? 'bg-primary text-on-primary clay-button-primary' 
 							: 'text-emerald-700/70 hover:bg-emerald-100/50 hover:text-emerald-900'
@@ -58,8 +61,9 @@
 				</a>
 			{/each}
 		</nav>
-		<div class="flex items-center gap-6">
-			<a href="/keranjang" data-cart-button class="relative p-2 hover:bg-emerald-100/50 rounded-full transition-colors">
+
+		<div class="flex items-center gap-2 md:gap-4 lg:gap-6">
+			<a href="/keranjang" data-cart-button class="relative p-2 hover:bg-emerald-100/50 rounded-full transition-colors flex-shrink-0">
 				<span class="material-symbols-outlined text-2xl text-emerald-900">shopping_cart</span>
 				{#if $cartItemCount > 0}
 					<span class="absolute -top-1 -right-1 bg-secondary-container text-on-secondary-container text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center clay-button-secondary">
@@ -67,12 +71,39 @@
 					</span>
 				{/if}
 			</a>
-			<button class="bg-primary text-on-primary px-8 py-3 rounded-full font-headline font-bold clay-button-primary active:scale-95 transition-all">Donasi</button>
-			<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden clay-card">
+			<button class="hidden sm:block bg-primary text-on-primary px-6 py-2.5 xl:px-8 xl:py-3 rounded-full font-headline font-bold clay-button-primary active:scale-95 transition-all text-sm xl:text-base whitespace-nowrap">Donasi</button>
+			<div class="hidden sm:block w-9 h-9 xl:w-10 xl:h-10 rounded-full bg-surface-container-high overflow-hidden clay-card flex-shrink-0">
 				<img alt="User profile" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200" />
 			</div>
+
+			<!-- Mobile Menu Button -->
+			<button class="lg:hidden p-2 text-emerald-900 hover:bg-emerald-100/50 rounded-full transition-colors" onclick={() => isMobileMenuOpen = !isMobileMenuOpen}>
+				<span class="material-symbols-outlined text-3xl">{isMobileMenuOpen ? 'close' : 'menu'}</span>
+			</button>
 		</div>
 	</header>
+
+	<!-- Mobile Navigation Overlay -->
+	{#if isMobileMenuOpen}
+		<div transition:fade={{ duration: 200 }} class="fixed inset-0 z-40 bg-emerald-950/20 backdrop-blur-[2px] lg:hidden" onclick={() => isMobileMenuOpen = false}></div>
+		<nav transition:slide={{ duration: 300, axis: 'y' }} class="fixed top-20 left-0 w-full z-40 bg-emerald-50 rounded-b-3xl shadow-xl flex flex-col p-6 gap-2 border-t border-emerald-100 lg:hidden">
+			{#each navLinks as link}
+				<a 
+					href={link.href}
+					onclick={() => isMobileMenuOpen = false}
+					class="px-6 py-4 rounded-xl font-headline font-bold transition-all text-lg {
+						$page.url.pathname === link.href 
+							? 'bg-primary text-on-primary clay-button-primary' 
+							: 'text-emerald-800 hover:bg-emerald-100/50'
+					}"
+				>
+					{link.label}
+				</a>
+			{/each}
+			<div class="w-full h-px bg-emerald-200 my-4"></div>
+			<button class="w-full bg-primary text-on-primary px-8 py-4 rounded-xl font-headline font-bold text-lg clay-button-primary active:scale-95 transition-all">Donasi Sekarang</button>
+		</nav>
+	{/if}
 
 	<main class="pt-28">
 		{@render children()}

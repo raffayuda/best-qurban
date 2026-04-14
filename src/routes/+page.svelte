@@ -239,7 +239,7 @@
 	<!-- Hero Section -->
 	<section
 		bind:this={heroRef}
-		class="clay-card group relative mb-20 h-[870px] min-h-[600px] w-full overflow-hidden rounded-xl"
+		class="clay-card group relative mb-12 md:mb-20 h-[70vh] min-h-[500px] md:h-[870px] md:min-h-[600px] w-full overflow-hidden rounded-xl"
 	>
 		<div
 			bind:this={heroBg}
@@ -247,18 +247,18 @@
 			style="background-image: url('https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?auto=format&fit=crop&q=80&w=1600')"
 		>
 			<div
-				class="absolute inset-0 bg-gradient-to-r from-emerald-950/80 via-emerald-950/40 to-transparent"
+				class="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-950/60 to-emerald-950/30 md:from-emerald-950/80 md:via-emerald-950/40 md:to-transparent"
 			></div>
 		</div>
 		<div
 			bind:this={heroContent}
-			class="relative flex h-full flex-col justify-center px-12 opacity-0 md:px-24"
+			class="relative flex h-full flex-col justify-center px-6 sm:px-12 opacity-0 md:px-24"
 		>
-			<span class="font-label mb-6 font-bold tracking-[0.3em] text-secondary-container uppercase"
+			<span class="font-label mb-4 md:mb-6 text-sm font-bold tracking-[0.2em] md:tracking-[0.3em] text-secondary-container uppercase"
 				>Tradisi & Teknologi</span
 			>
 			<h1
-				class="font-headline mb-8 max-w-2xl text-6xl leading-[0.9] font-black tracking-tighter text-white md:text-8xl"
+				class="font-headline mb-6 md:mb-8 max-w-2xl text-5xl sm:text-6xl leading-[1] md:leading-[0.9] font-black tracking-tighter text-white md:text-8xl"
 			>
 				Ibadah Suci,<br /><span class="font-light text-secondary-container italic">Terpilih.</span>
 			</h1>
