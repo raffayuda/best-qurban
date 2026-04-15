@@ -2,6 +2,34 @@
 	import { onMount, tick } from 'svelte';
 	import { animate, scroll, inView } from 'motion';
 	import { cart } from '$lib/stores/cart';
+	import { isAdmin } from '$lib/stores/auth';
+	import { landingContent, isEditMode, DEFAULT_CONTENT } from '$lib/stores/content';
+
+	// Edit mode state - clone so we can edit locally before saving
+	let editData = $state(JSON.parse(JSON.stringify($landingContent)));
+	let saveToast = $state(false);
+
+	$effect(() => {
+		// Sync whenever store changes externally
+		if (!$isEditMode) {
+			editData = JSON.parse(JSON.stringify($landingContent));
+		}
+	});
+
+	function saveEdits() {
+		landingContent.save(JSON.parse(JSON.stringify(editData)));
+		saveToast = true;
+		setTimeout(() => (saveToast = false), 2500);
+	}
+
+	function resetEdits() {
+		landingContent.reset();
+		editData = JSON.parse(JSON.stringify(DEFAULT_CONTENT));
+	}
+
+	function exitEditMode() {
+		isEditMode.set(false);
+	}
 
 	// Animation refs
 	let heroRef: HTMLElement;
@@ -12,7 +40,6 @@
 	let ctaRef: HTMLElement;
 	let productCards: HTMLElement[] = [];
 	let processCards: HTMLElement[] = [];
-	let scrollProgress = 0;
 	let showNotification = false;
 	let notificationMessage = '';
 
@@ -235,6 +262,39 @@
 	</div>
 {/if}
 
+<!-- Admin Edit Toolbar -->
+{#if $isAdmin && $isEditMode}
+	<div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[80] flex items-center gap-3 bg-emerald-950 text-white rounded-2xl px-5 py-3 shadow-2xl border border-emerald-700/50 backdrop-blur-xl">
+		<div class="flex items-center gap-2">
+			<div class="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
+			<span class="text-sm font-bold text-amber-300">Edit Mode Aktif</span>
+		</div>
+		<div class="w-px h-6 bg-emerald-700"></div>
+		{#if saveToast}
+			<span class="text-sm font-bold text-emerald-400 flex items-center gap-1">
+				<span class="material-symbols-outlined text-sm">check_circle</span>
+				Tersimpan!
+			</span>
+		{:else}
+			<button onclick={saveEdits} class="flex items-center gap-1.5 bg-primary text-on-primary px-4 py-1.5 rounded-xl text-sm font-bold hover:scale-105 transition-transform">
+				<span class="material-symbols-outlined text-sm">save</span>
+				Simpan
+			</button>
+		{/if}
+		<button onclick={resetEdits} class="flex items-center gap-1.5 bg-surface-container-high text-on-surface-variant px-3 py-1.5 rounded-xl text-sm font-bold hover:bg-surface-container-highest transition-colors">
+			<span class="material-symbols-outlined text-sm">restart_alt</span>
+			Reset
+		</button>
+		<button onclick={exitEditMode} class="flex items-center gap-1.5 text-emerald-300/70 hover:text-white px-2 py-1.5 rounded-xl text-sm font-bold transition-colors">
+			<span class="material-symbols-outlined text-sm">close</span>
+			Keluar
+		</button>
+		<a href="/dashboard" class="flex items-center gap-1.5 text-emerald-300/70 hover:text-white px-2 py-1.5 rounded-xl text-sm font-bold transition-colors">
+			<span class="material-symbols-outlined text-sm">dashboard</span>
+		</a>
+	</div>
+{/if}
+
 <div class="max-w-8xl mx-auto px-4 md:px-12">
 	<!-- Hero Section -->
 	<section
@@ -254,20 +314,30 @@
 			bind:this={heroContent}
 			class="relative flex h-full flex-col justify-center px-6 sm:px-12 opacity-0 md:px-24"
 		>
-			<span class="font-label mb-4 md:mb-6 text-sm font-bold tracking-[0.2em] md:tracking-[0.3em] text-secondary-container uppercase"
-				>Tradisi & Teknologi</span
-			>
+			<span
+				contenteditable="true"
+				bind:textContent={editData.hero.tagline}
+				class="font-label mb-4 md:mb-6 text-sm font-bold tracking-[0.2em] md:tracking-[0.3em] text-secondary-container uppercase {$isEditMode && $isAdmin ? 'outline outline-2 outline-amber-400/60 outline-dashed rounded px-1 cursor-text hover:outline-amber-400 focus:outline-amber-400' : 'pointer-events-none outline-none'}"
+			>{editData.hero.tagline}</span>
 			<h1
 				class="font-headline mb-6 md:mb-8 max-w-2xl text-5xl sm:text-6xl leading-[1] md:leading-[0.9] font-black tracking-tighter text-white md:text-8xl"
 			>
-				Ibadah Suci,<br /><span class="font-light text-secondary-container italic">Terpilih.</span>
+				<span
+					contenteditable="true"
+					bind:textContent={editData.hero.title}
+					class="{$isEditMode && $isAdmin ? 'outline outline-2 outline-amber-400/60 outline-dashed rounded px-1 cursor-text hover:outline-amber-400 focus:outline-amber-400' : 'pointer-events-none outline-none'}"
+				>{editData.hero.title}</span><br />
+				<span
+					contenteditable="true"
+					bind:textContent={editData.hero.titleItalic}
+					class="font-light text-secondary-container italic {$isEditMode && $isAdmin ? 'outline outline-2 outline-amber-400/60 outline-dashed rounded px-1 cursor-text hover:outline-amber-400 focus:outline-amber-400' : 'pointer-events-none outline-none'}"
+				>{editData.hero.titleItalic}</span>
 			</h1>
 			<p
-				class="mb-12 max-w-lg text-xl leading-relaxed font-medium text-emerald-50 opacity-90 md:text-2xl"
-			>
-				Menghadirkan pengalaman kurban premium yang mengutamakan kualitas hewan terbaik dan
-				transparansi proses ritual yang sakral.
-			</p>
+				contenteditable="true"
+				bind:textContent={editData.hero.subtitle}
+				class="mb-12 max-w-lg text-xl leading-relaxed font-medium text-emerald-50 opacity-90 md:text-2xl {$isEditMode && $isAdmin ? 'outline outline-2 outline-amber-400/60 outline-dashed rounded px-1 cursor-text hover:outline-amber-400 focus:outline-amber-400' : 'pointer-events-none outline-none'}"
+			>{editData.hero.subtitle}</p>
 			<div class="flex flex-wrap gap-6">
 				<a
 					href="/hewan"
@@ -307,12 +377,10 @@
 			</a>
 		</div>
 		<div class="grid grid-cols-1 gap-12 md:grid-cols-3">
-			{#each products as product, index}
+			{#each editData.products as product, index}
 				<div
 					bind:this={productCards[index]}
-					class="clay-card group flex flex-col rounded-xl bg-surface-container-lowest p-8 transition-transform duration-500 hover:-translate-y-4 {product.isBestChoice
-						? 'border-2 border-primary/10'
-						: ''} opacity-0"
+					class="clay-card group flex flex-col rounded-xl bg-surface-container-lowest p-8 transition-transform duration-500 hover:-translate-y-4 opacity-0 {$isEditMode && $isAdmin ? 'ring-2 ring-amber-400/30' : ''}"
 				>
 					<div class="clay-recessed relative mb-8 h-80 w-full overflow-hidden rounded-lg">
 						<img
@@ -320,24 +388,43 @@
 							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
 							src={product.image}
 						/>
-						{#if product.badge}
-							<div
-								class="absolute top-4 right-4 {product.badge.bgClass} {product.badge
-									.textClass} font-label rounded-full px-4 py-1 text-xs font-bold tracking-widest uppercase"
-							>
-								{product.badge.text}
+						{#if $isEditMode && $isAdmin}
+							<div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+								<label class="bg-white/90 text-on-surface text-xs font-bold px-3 py-2 rounded-full cursor-pointer">
+									✏️ URL Foto
+									<input type="text" class="hidden" value={product.image} oninput={(e) => { editData.products[index].image = (e.target as HTMLInputElement).value; }} />
+								</label>
 							</div>
 						{/if}
 					</div>
-					<div class="mb-4 flex items-start justify-between">
-						<h3 class="font-headline text-3xl font-black text-on-surface">{product.name}</h3>
-						<span class="font-label font-bold text-emerald-700">{product.weight}</span>
+					<div class="mb-4 flex items-start justify-between gap-2">
+						<h3
+							contenteditable="true"
+							bind:textContent={editData.products[index].name}
+							class="font-headline text-3xl font-black text-on-surface {$isEditMode && $isAdmin ? 'outline outline-2 outline-amber-400/60 outline-dashed rounded px-1 cursor-text hover:outline-amber-400 min-w-[60px]' : 'pointer-events-none outline-none'}"
+						>{product.name}</h3>
+						<span class="font-label font-bold text-emerald-700 shrink-0">{product.weight}</span>
 					</div>
-					<p class="mb-8 flex-grow font-medium text-on-surface-variant">{product.description}</p>
+					<p
+						contenteditable="true"
+						bind:textContent={editData.products[index].description}
+						class="mb-8 flex-grow font-medium text-on-surface-variant {$isEditMode && $isAdmin ? 'outline outline-2 outline-amber-400/60 outline-dashed rounded px-1 cursor-text hover:outline-amber-400' : 'pointer-events-none outline-none'}"
+					>{product.description}</p>
 					<div class="mt-auto flex items-center justify-between">
-						<div class="font-headline text-2xl font-black text-primary">
-							{formatPrice(product.price)}
-						</div>
+						{#if $isEditMode && $isAdmin}
+							<div class="flex items-center gap-1">
+								<span class="font-headline text-lg font-black text-primary">Rp</span>
+								<input
+									type="number"
+									bind:value={editData.products[index].price}
+									class="font-headline text-xl font-black text-primary border-b-2 border-amber-400 bg-transparent w-32 focus:outline-none"
+								/>
+							</div>
+						{:else}
+							<div class="font-headline text-2xl font-black text-primary">
+								{formatPrice(product.price)}
+							</div>
+						{/if}
 						<div class="flex gap-2">
 							<a
 								href="/hewan/{product.id}"
@@ -346,7 +433,7 @@
 								Detail
 							</a>
 							<button
-								on:click={(e) => addToCart(product, e)}
+								onclick={(e) => addToCart({ ...product, id: product.id, isBestChoice: false, badge: undefined }, e)}
 								class="clay-button-primary flex h-10 w-10 items-center justify-center rounded-full bg-primary-container text-on-primary-container transition-transform hover:scale-110"
 							>
 								<span class="material-symbols-outlined text-sm">add</span>
